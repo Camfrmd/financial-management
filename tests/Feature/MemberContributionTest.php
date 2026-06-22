@@ -25,7 +25,7 @@ class MemberContributionTest extends TestCase
         $member = Member::create(['group_id' => $group->group_id, 'member_name' => 'Wayan', 'status' => 'active']);
         $categoryParent = Category::create(['category_name' => 'Parent', 'type' => 'income']);
         $category = Category::create(['category_name' => 'Child', 'type' => 'income', 'parent_id' => $categoryParent->category_id]);
-        $user = User::create(['name' => 'User', 'email' => 'test@test.com', 'password' => 'pass', 'role' => 'treasurer']);
+        $user = User::create(['username' => 'User', 'email' => 'test@test.com', 'password' => 'pass', 'role' => 'treasurer']);
 
         $transaction = Transaction::create([
             'category_id' => $category->category_id,

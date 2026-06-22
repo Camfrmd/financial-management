@@ -14,14 +14,14 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => 'Wayan Treasurer',
+            'username' => 'Wayan Treasurer',
             'email' => 'treasurer@banjar.com',
             'password' => 'password123', 
             'role' => 'treasurer',
         ]);
 
         User::create([
-            'name' => 'Made Kelian',
+            'username' => 'Made Kelian',
             'email' => 'kelian@banjar.com',
             'password' => 'password123',
             'role' => 'kelian',

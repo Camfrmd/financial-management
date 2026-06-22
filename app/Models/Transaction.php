@@ -54,6 +54,18 @@ class Transaction extends Model
             }
         });
 
+        static::updating(function (Transaction $transaction) {
+            if ($transaction->getOriginal('validation_status') === 'validated') {
+                throw new \Exception('Une transaction validée est scellée et inaltérable. Une contre-passation est requise.');
+            }
+        });
+
+        static::deleting(function (Transaction $transaction) {
+            if ($transaction->validation_status === 'validated') {
+                throw new \Exception('Une transaction validée ne peut être supprimée. Une contre-passation est requise.');
+            }
+        });
+
         static::created(function (Transaction $transaction) {
             if ($transaction->validation_status === 'validated') {
                 $transaction->applyToFund();
@@ -66,12 +78,22 @@ class Transaction extends Model
             $originalType = $transaction->getOriginal('type');
             $originalFundId = $transaction->getOriginal('fund_id');
 
-            if ($originalStatus === 'validated') {
+            // Uniquement si la transaction vient d'être approuvée
+            if ($transaction->wasChanged('validation_status') && $transaction->validation_status === 'validated') {
+                $transaction->applyToFund();
+            }
+            
+            // Uniquement si la transaction vient d'être annulée/rejetée alors qu'elle était validée
+            if ($transaction->wasChanged('validation_status') && $originalStatus === 'validated' && $transaction->validation_status !== 'validated') {
                 $transaction->revertFromFund($originalAmount, $originalType, $originalFundId);
             }
 
-            if ($transaction->validation_status === 'validated') {
-                $transaction->applyToFund();
+            // Si une transaction DEJA validée voit son montant ou son type modifié
+            if (!$transaction->wasChanged('validation_status') && $originalStatus === 'validated') {
+                if ($transaction->wasChanged(['amount', 'type', 'fund_id'])) {
+                    $transaction->revertFromFund($originalAmount, $originalType, $originalFundId);
+                    $transaction->applyToFund();
+                }
             }
         });
 
