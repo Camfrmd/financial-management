@@ -49,7 +49,7 @@
                         @endcan
 
                         @can('manage-users')
-                        <a href="{{ route('users.*') }}" 
+                        <a href="{{ route('users.index') }}" 
                            class="px-3 py-2 rounded-md text-sm font-medium transition-colors border-b-2 
                            {{ request()->routeIs('users.*') ? 'border-red-500 text-white' : 'border-transparent text-gray-300 hover:text-white hover:border-gray-500' }}">
                             Manajemen Pengguna
@@ -96,7 +96,7 @@
                 @endcan
 
                 @can('manage-users')
-                <a href="{{ route('users.*') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('users.*') ? 'bg-gray-900 text-white border-l-4 border-red-500' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">Manajemen Pengguna</a>
+                <a href="{{ route('users.index') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('users.*') ? 'bg-gray-900 text-white border-l-4 border-red-500' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">Manajemen Pengguna</a>
                 @endcan
             </div>
             <div class="pt-4 pb-3 border-t border-gray-700">
