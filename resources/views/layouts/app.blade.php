@@ -58,10 +58,30 @@
                     </div>
                 </div>
 
-                <!-- Utilisateur & Déconnexion -->
-                <div class="hidden md:flex items-center space-x-4">
-                    <div class="text-sm text-gray-300">
-                        Om Swastiastu, <span class="text-white font-semibold">{{ Auth::user()->username }}</span>
+                <!-- Langues & Utilisateur & Déconnexion -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <!-- Language Switcher -->
+                    <div class="flex space-x-2 text-xs font-semibold">
+                        <a href="{{ route('lang.switch', 'id') }}" class="{{ app()->getLocale() == 'id' ? 'text-red-500 border-b border-red-500' : 'text-gray-400 hover:text-white' }}">ID</a>
+                        <span class="text-gray-600">|</span>
+                        <a href="{{ route('lang.switch', 'en') }}" class="{{ app()->getLocale() == 'en' ? 'text-red-500 border-b border-red-500' : 'text-gray-400 hover:text-white' }}">EN</a>
+                        <span class="text-gray-600">|</span>
+                        <a href="{{ route('lang.switch', 'fr') }}" class="{{ app()->getLocale() == 'fr' ? 'text-red-500 border-b border-red-500' : 'text-gray-400 hover:text-white' }}">FR</a>
+                    </div>
+
+                    <div class="flex items-center space-x-4 border-l border-gray-700 pl-6">
+                        <div class="text-sm text-gray-300">
+                            Om Swastiastu, <span class="text-white font-semibold">{{ Auth::user()->username }}</span>
+                            <span class="text-xs text-gray-500 ml-1">({{ ucfirst(Auth::user()->role) }})</span>
+                        </div>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="border border-gray-600 hover:bg-gray-700 text-gray-300 hover:text-white px-3 py-1.5 rounded transition-colors text-sm font-medium">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
                         <span class="text-xs text-gray-500 ml-1">({{ ucfirst(Auth::user()->role) }})</span>
                     </div>
                     <form method="POST" action="{{ route('logout') }}">
@@ -87,16 +107,16 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="md:hidden hidden bg-gray-800 border-t border-gray-700">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('dashboard') ? 'bg-gray-900 text-white border-l-4 border-red-500' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">Dashboard</a>
+                <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('dashboard') ? 'bg-gray-900 text-white border-l-4 border-red-500' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">{{ __('Dashboard') }}</a>
                 
-                <a href="{{ route('transactions.create') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('transactions.create') ? 'bg-gray-900 text-white border-l-4 border-red-500' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">+ Transaksi Baru</a>
+                <a href="{{ route('transactions.create') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('transactions.create') ? 'bg-gray-900 text-white border-l-4 border-red-500' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">+ {{ __('New Transaction') }}</a>
 
                 @can('validate-transactions')
-                <a href="{{ route('transactions.pending') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('transactions.pending') ? 'bg-gray-900 text-yellow-400 border-l-4 border-yellow-500' : 'text-gray-300 hover:bg-gray-700 hover:text-yellow-400' }}">Validasi Transaksi</a>
+                <a href="{{ route('transactions.pending') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('transactions.pending') ? 'bg-gray-900 text-yellow-400 border-l-4 border-yellow-500' : 'text-gray-300 hover:bg-gray-700 hover:text-yellow-400' }}">{{ __('Review Queue') }}</a>
                 @endcan
 
                 @can('manage-users')
-                <a href="{{ route('users.index') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('users.*') ? 'bg-gray-900 text-white border-l-4 border-red-500' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">Manajemen Pengguna</a>
+                <a href="{{ route('users.index') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('users.*') ? 'bg-gray-900 text-white border-l-4 border-red-500' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">{{ __('User Management') }}</a>
                 @endcan
             </div>
             <div class="pt-4 pb-3 border-t border-gray-700">
@@ -107,7 +127,7 @@
                 <div class="mt-3 px-2 space-y-1">
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">Logout</button>
+                        <button type="submit" class="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">{{ __('Logout') }}</button>
                     </form>
                 </div>
             </div>
