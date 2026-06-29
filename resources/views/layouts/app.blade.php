@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,140 +7,151 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- Fallback if Vite is not running -->
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
+        /* Premium custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #111827; }
+        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4B5563; }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
+<body class="bg-[#0f111a] text-gray-200 min-h-screen flex flex-col antialiased selection:bg-red-500/30">
 
-    <!-- Navbar Global (Top-Nav) -->
-    <nav class="bg-gray-800 border-b-2 border-red-700 shadow-md">
-        <div class="container mx-auto px-4 max-w-6xl">
+    <!-- Premium Navbar -->
+    <nav class="bg-[#161925] border-b border-gray-800/60 sticky top-0 z-50 backdrop-blur-sm bg-opacity-90">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 
-                <!-- Logo & Menu Principal (Desktop) -->
-                <div class="flex items-center space-x-8">
-                    <a href="{{ route('dashboard') }}" class="flex items-center space-x-3">
-                        <div class="bg-red-700 text-white font-bold px-2 py-1 rounded shadow">SKB</div>
-                        <span class="text-xl font-semibold hidden md:block text-white">Sistem Keuangan Banjar</span>
+                <!-- Left Section: Logo & Links -->
+                <div class="flex items-center">
+                    <!-- Logo -->
+                    <a href="{{ route('dashboard') }}" class="flex items-center space-x-3 group mr-8">
+                        <div class="bg-gradient-to-br from-red-600 to-red-800 text-white font-bold px-2.5 py-1.5 rounded-lg shadow-lg shadow-red-900/20 group-hover:shadow-red-900/40 transition-all duration-300">
+                            SKB
+                        </div>
+                        <div class="hidden lg:flex flex-col">
+                            <span class="text-lg font-bold text-white leading-tight tracking-wide">Sistem Keuangan</span>
+                            <span class="text-xs text-red-500 font-medium tracking-widest uppercase">Banjar</span>
+                        </div>
                     </a>
 
-                    <!-- Navigation Links (Desktop) -->
+                    <!-- Desktop Nav Links -->
                     <div class="hidden md:flex space-x-1">
                         <a href="{{ route('dashboard') }}" 
-                           class="px-3 py-2 rounded-md text-sm font-medium transition-colors border-b-2 
-                           {{ request()->routeIs('dashboard') ? 'border-red-500 text-white' : 'border-transparent text-gray-300 hover:text-white hover:border-gray-500' }}">
-                            Dashboard
+                           class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center
+                           {{ request()->routeIs('dashboard') ? 'bg-gray-800/50 text-white shadow-inner border border-gray-700/50' : 'text-gray-400 hover:text-white hover:bg-gray-800/30' }}">
+                            {{ __('Dashboard') }}
                         </a>
                         
                         <a href="{{ route('transactions.create') }}" 
-                           class="px-3 py-2 rounded-md text-sm font-medium transition-colors border-b-2 
-                           {{ request()->routeIs('transactions.create') ? 'border-red-500 text-white' : 'border-transparent text-gray-300 hover:text-white hover:border-gray-500' }}">
-                            + Transaksi Baru
+                           class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center
+                           {{ request()->routeIs('transactions.create') ? 'bg-gray-800/50 text-white shadow-inner border border-gray-700/50' : 'text-gray-400 hover:text-white hover:bg-gray-800/30' }}">
+                            <span class="text-red-500 mr-1.5 font-bold">+</span> {{ __('New Transaction') }}
                         </a>
 
                         @can('validate-transactions')
                         <a href="{{ route('transactions.pending') }}" 
-                           class="px-3 py-2 rounded-md text-sm font-medium transition-colors border-b-2 
-                           {{ request()->routeIs('transactions.pending') ? 'border-yellow-500 text-yellow-400' : 'border-transparent text-gray-300 hover:text-yellow-400 hover:border-yellow-600' }}">
-                            Validasi Transaksi
+                           class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center
+                           {{ request()->routeIs('transactions.pending') ? 'bg-yellow-900/20 text-yellow-400 border border-yellow-700/30' : 'text-gray-400 hover:text-yellow-400 hover:bg-yellow-900/10' }}">
+                            {{ __('Review Queue') }}
                         </a>
                         @endcan
 
                         @can('manage-users')
                         <a href="{{ route('users.index') }}" 
-                           class="px-3 py-2 rounded-md text-sm font-medium transition-colors border-b-2 
-                           {{ request()->routeIs('users.*') ? 'border-red-500 text-white' : 'border-transparent text-gray-300 hover:text-white hover:border-gray-500' }}">
-                            Manajemen Pengguna
+                           class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center
+                           {{ request()->routeIs('users.*') ? 'bg-gray-800/50 text-white shadow-inner border border-gray-700/50' : 'text-gray-400 hover:text-white hover:bg-gray-800/30' }}">
+                            {{ __('User Management') }}
                         </a>
                         @endcan
                     </div>
                 </div>
 
-                <!-- Langues & Utilisateur & Déconnexion -->
-                <div class="hidden md:flex items-center space-x-6">
+                <!-- Right Section: Language, User & Mobile Toggle -->
+                <div class="flex items-center space-x-6">
+                    
                     <!-- Language Switcher -->
-                    <div class="flex space-x-2 text-xs font-semibold">
-                        <a href="{{ route('lang.switch', 'id') }}" class="{{ app()->getLocale() == 'id' ? 'text-red-500 border-b border-red-500' : 'text-gray-400 hover:text-white' }}">ID</a>
-                        <span class="text-gray-600">|</span>
-                        <a href="{{ route('lang.switch', 'en') }}" class="{{ app()->getLocale() == 'en' ? 'text-red-500 border-b border-red-500' : 'text-gray-400 hover:text-white' }}">EN</a>
-                        <span class="text-gray-600">|</span>
-                        <a href="{{ route('lang.switch', 'fr') }}" class="{{ app()->getLocale() == 'fr' ? 'text-red-500 border-b border-red-500' : 'text-gray-400 hover:text-white' }}">FR</a>
+                    <div class="hidden sm:flex bg-gray-900/50 rounded-lg p-1 border border-gray-800">
+                        <a href="{{ route('lang.switch', 'id') }}" class="px-2.5 py-1 text-xs font-bold rounded transition-colors {{ app()->getLocale() == 'id' ? 'bg-red-600 text-white shadow' : 'text-gray-500 hover:text-gray-300' }}">ID</a>
+                        <a href="{{ route('lang.switch', 'en') }}" class="px-2.5 py-1 text-xs font-bold rounded transition-colors {{ app()->getLocale() == 'en' ? 'bg-red-600 text-white shadow' : 'text-gray-500 hover:text-gray-300' }}">EN</a>
+                        <a href="{{ route('lang.switch', 'fr') }}" class="px-2.5 py-1 text-xs font-bold rounded transition-colors {{ app()->getLocale() == 'fr' ? 'bg-red-600 text-white shadow' : 'text-gray-500 hover:text-gray-300' }}">FR</a>
                     </div>
 
-                    <div class="flex items-center space-x-4 border-l border-gray-700 pl-6">
-                        <div class="text-sm text-gray-300">
-                            Om Swastiastu, <span class="text-white font-semibold">{{ Auth::user()->username }}</span>
-                            <span class="text-xs text-gray-500 ml-1">({{ ucfirst(Auth::user()->role) }})</span>
+                    <!-- User Profile & Logout -->
+                    <div class="hidden md:flex items-center space-x-4 pl-6 border-l border-gray-800">
+                        <div class="flex flex-col text-right">
+                            <span class="text-sm font-semibold text-white leading-tight">{{ Auth::user()->username }}</span>
+                            <span class="text-xs text-gray-500 font-medium">{{ ucfirst(Auth::user()->role) }}</span>
                         </div>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="border border-gray-600 hover:bg-gray-700 text-gray-300 hover:text-white px-3 py-1.5 rounded transition-colors text-sm font-medium">
-                                Logout
+                            <button type="submit" class="p-2 text-gray-400 hover:text-red-400 bg-gray-800/50 hover:bg-red-900/20 border border-gray-700 hover:border-red-900/50 rounded-lg transition-all duration-200 group" title="{{ __('Logout') }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
                             </button>
                         </form>
                     </div>
-                </div>
-                        <span class="text-xs text-gray-500 ml-1">({{ ucfirst(Auth::user()->role) }})</span>
-                    </div>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="border border-gray-600 hover:bg-gray-700 text-gray-300 hover:text-white px-3 py-1.5 rounded transition-colors text-sm font-medium">
-                            Logout
-                        </button>
-                    </form>
-                </div>
 
-                <!-- Hamburger Menu Button (Mobile) -->
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path id="menu-icon-bars" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                            <path id="menu-icon-close" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
-                    </button>
+                    <!-- Mobile Menu Button -->
+                    <div class="md:hidden flex items-center">
+                        <button id="mobile-menu-btn" class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none transition-colors">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path id="menu-icon-bars" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                                <path id="menu-icon-close" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>
 
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="md:hidden hidden bg-gray-800 border-t border-gray-700">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('dashboard') ? 'bg-gray-900 text-white border-l-4 border-red-500' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">{{ __('Dashboard') }}</a>
-                
-                <a href="{{ route('transactions.create') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('transactions.create') ? 'bg-gray-900 text-white border-l-4 border-red-500' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">+ {{ __('New Transaction') }}</a>
-
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-[#1a1d2d] border-t border-gray-800 shadow-xl">
+            <div class="px-4 py-3 space-y-1">
+                <a href="{{ route('dashboard') }}" class="block px-3 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('dashboard') ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800/50 hover:text-white' }}">{{ __('Dashboard') }}</a>
+                <a href="{{ route('transactions.create') }}" class="block px-3 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('transactions.create') ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800/50 hover:text-white' }}">{{ __('New Transaction') }}</a>
                 @can('validate-transactions')
-                <a href="{{ route('transactions.pending') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('transactions.pending') ? 'bg-gray-900 text-yellow-400 border-l-4 border-yellow-500' : 'text-gray-300 hover:bg-gray-700 hover:text-yellow-400' }}">{{ __('Review Queue') }}</a>
+                <a href="{{ route('transactions.pending') }}" class="block px-3 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('transactions.pending') ? 'bg-yellow-900/30 text-yellow-400' : 'text-gray-400 hover:bg-gray-800/50 hover:text-yellow-400' }}">{{ __('Review Queue') }}</a>
                 @endcan
-
                 @can('manage-users')
-                <a href="{{ route('users.index') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('users.*') ? 'bg-gray-900 text-white border-l-4 border-red-500' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">{{ __('User Management') }}</a>
+                <a href="{{ route('users.index') }}" class="block px-3 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('users.*') ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800/50 hover:text-white' }}">{{ __('User Management') }}</a>
                 @endcan
             </div>
-            <div class="pt-4 pb-3 border-t border-gray-700">
-                <div class="flex items-center px-5">
-                    <div class="text-base font-medium leading-none text-white">{{ Auth::user()->username }}</div>
-                    <div class="text-sm font-medium leading-none text-gray-400 mt-1">{{ ucfirst(Auth::user()->role) }}</div>
+            
+            <div class="pt-4 pb-4 border-t border-gray-800 px-5">
+                <!-- Mobile Language -->
+                <div class="flex space-x-2 mb-4 bg-gray-900 rounded-lg p-1 w-max">
+                    <a href="{{ route('lang.switch', 'id') }}" class="px-3 py-1.5 text-xs font-bold rounded {{ app()->getLocale() == 'id' ? 'bg-red-600 text-white' : 'text-gray-500' }}">ID</a>
+                    <a href="{{ route('lang.switch', 'en') }}" class="px-3 py-1.5 text-xs font-bold rounded {{ app()->getLocale() == 'en' ? 'bg-red-600 text-white' : 'text-gray-500' }}">EN</a>
+                    <a href="{{ route('lang.switch', 'fr') }}" class="px-3 py-1.5 text-xs font-bold rounded {{ app()->getLocale() == 'fr' ? 'bg-red-600 text-white' : 'text-gray-500' }}">FR</a>
                 </div>
-                <div class="mt-3 px-2 space-y-1">
+                
+                <!-- Mobile User -->
+                <div class="flex justify-between items-center">
+                    <div>
+                        <div class="text-base font-medium text-white">{{ Auth::user()->username }}</div>
+                        <div class="text-sm text-gray-500">{{ ucfirst(Auth::user()->role) }}</div>
+                    </div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">{{ __('Logout') }}</button>
+                        <button type="submit" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg shadow transition-colors">{{ __('Logout') }}</button>
                     </form>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Contenu Principal -->
-    <main class="container mx-auto px-4 py-8 max-w-6xl flex-grow">
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-grow">
         @hasSection('back_button')
-            <div class="mb-4">
-                <a href="@yield('back_url', url()->previous())" class="inline-flex items-center text-sm text-gray-400 hover:text-white transition-colors group">
-                    <svg class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                    @yield('back_text', 'Kembali')
+            <div class="mb-6">
+                <a href="@yield('back_url', url()->previous())" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-gray-400 bg-gray-800/30 border border-gray-700/50 rounded-lg hover:text-white hover:bg-gray-800 transition-all group shadow-sm">
+                    <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-white group-hover:-translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    @yield('back_text', __('Back'))
                 </a>
             </div>
         @endif
@@ -148,19 +159,27 @@
         @yield('content')
     </main>
 
-    <footer class="bg-gray-900 border-t border-gray-800 py-6 mt-auto">
-        <div class="container mx-auto px-4 text-center text-gray-500 text-sm">
-            &copy; {{ date('Y') }} Sistem Keuangan Banjar. All rights reserved.
+    <!-- Footer -->
+    <footer class="bg-[#161925] border-t border-gray-800/60 py-6 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+            <div>
+                &copy; {{ date('Y') }} Sistem Keuangan Banjar. All rights reserved.
+            </div>
+            <div class="mt-2 md:mt-0 flex items-center space-x-2">
+                <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                <span>System Online</span>
+            </div>
         </div>
     </footer>
 
     <script>
-        // Simple script to toggle mobile menu
-        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-            var menu = document.getElementById('mobile-menu');
-            var iconBars = document.getElementById('menu-icon-bars');
-            var iconClose = document.getElementById('menu-icon-close');
-            
+        // Mobile menu toggle script
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        const iconBars = document.getElementById('menu-icon-bars');
+        const iconClose = document.getElementById('menu-icon-close');
+        
+        btn.addEventListener('click', () => {
             menu.classList.toggle('hidden');
             iconBars.classList.toggle('hidden');
             iconClose.classList.toggle('hidden');
