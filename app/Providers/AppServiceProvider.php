@@ -22,5 +22,13 @@ class AppServiceProvider extends ServiceProvider
         if (env('APP_ENV') === 'production') {
             URL::forceScheme('https');
         }
+
+        \Illuminate\Support\Facades\Gate::define('validate-transactions', function (\App\Models\User $user) {
+            return $user->role === 'kelian';
+        });
+
+        \Illuminate\Support\Facades\Gate::define('manage-users', function (\App\Models\User $user) {
+            return $user->role === 'kelian';
+        });
     }
 }

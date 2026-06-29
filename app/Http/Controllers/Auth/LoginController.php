@@ -32,6 +32,7 @@ class LoginController extends Controller
         $this->ensureIsNotRateLimited($request);
 
         $credentials = $request->only('email', 'password');
+        $credentials['is_active'] = 1; // Only allow active users to login
         $remember = $request->boolean('remember');
 
         if (Auth::attempt($credentials, $remember)) {

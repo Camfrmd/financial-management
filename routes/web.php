@@ -28,4 +28,8 @@ Route::middleware('auth')->group(function () {
         Route::patch('transactions/{transaction}/approve', [TransactionController::class, 'approve'])->name('transactions.approve');
         Route::patch('transactions/{transaction}/reject', [TransactionController::class, 'reject'])->name('transactions.reject');
     });
+
+    Route::middleware('can:manage-users')->group(function () {
+        Route::resource('users', \App\Http\Controllers\UserController::class)->except(['show', 'destroy']);
+    });
 });
