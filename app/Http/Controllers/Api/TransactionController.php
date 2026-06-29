@@ -55,6 +55,8 @@ class TransactionController extends Controller
     {
         $transaction = Transaction::findOrFail($id);
 
+        \Illuminate\Support\Facades\Gate::authorize('update', $transaction);
+
         $validated = $request->validate([
             'category_id' => 'sometimes|required|exists:categories,category_id',
             'fund_id' => 'sometimes|required|exists:funds,fund_id',
@@ -78,6 +80,9 @@ class TransactionController extends Controller
     public function destroy($id)
     {
         $transaction = Transaction::findOrFail($id);
+        
+        \Illuminate\Support\Facades\Gate::authorize('delete', $transaction);
+        
         $transaction->delete();
         return response()->json(['status' => 'success', 'message' => 'Transaction supprimée'], 200);
     }

@@ -11,15 +11,17 @@ use App\Http\Controllers\Api\FundController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\MemberContributionController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 
-Route::apiResource('users', UserController::class);
-Route::apiResource('categories', CategoryController::class);
-Route::apiResource('groups', CommunityGroupController::class);
-Route::apiResource('activities', ActivityController::class);
-Route::apiResource('members', MemberController::class);
-Route::apiResource('funds', FundController::class);
-Route::apiResource('transactions', TransactionController::class);
-Route::apiResource('contributions', MemberContributionController::class);
+    Route::apiResource('users', UserController::class);
+    Route::apiResource('categories', CategoryController::class);
+    Route::apiResource('groups', CommunityGroupController::class);
+    Route::apiResource('activities', ActivityController::class);
+    Route::apiResource('members', MemberController::class);
+    Route::apiResource('funds', FundController::class);
+    Route::apiResource('transactions', TransactionController::class);
+    Route::apiResource('contributions', MemberContributionController::class);
+});

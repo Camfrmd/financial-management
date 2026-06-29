@@ -19,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        \Illuminate\Support\Facades\Gate::define('validate-transactions', function (\App\Models\User $user) {
+            return $user->role === 'kelian';
+        });
     }
 }
