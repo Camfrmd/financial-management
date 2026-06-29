@@ -27,6 +27,11 @@
         </div>
 
         <div class="flex items-center space-x-6">
+            @can('manage-users')
+                <a href="{{ route('users.index') }}" class="text-gray-300 hover:text-white text-sm font-medium border-b-2 border-transparent hover:border-red-500 transition-colors">
+                    Manajemen Pengguna
+                </a>
+            @endcan
             <div class="text-gray-300">
                 Om Swastiastu, <span class="text-white font-semibold">{{ Auth::user()->username }}</span>
             </div>
