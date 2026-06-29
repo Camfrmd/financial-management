@@ -1,26 +1,12 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Keuangan Banjar - Edit Pengguna</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Inter', sans-serif; }</style>
-</head>
-<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
-    <nav class="bg-gray-800 border-b-2 border-red-700 px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center space-x-4">
-            <div class="bg-red-700 text-white font-bold p-2 rounded"><a href="{{ route('dashboard') }}">SKB</a></div>
-            <h1 class="text-xl font-semibold hidden sm:block">Edit Pengguna</h1>
-        </div>
-        <div class="flex items-center space-x-6">
-            <a href="{{ route('users.index') }}" class="text-gray-300 hover:text-white mr-4 text-sm">{{ __('Kembali ke Daftar') }}</a>
-        </div>
-    </nav>
+@extends('layouts.app')
 
-    <main class="container mx-auto px-4 py-12 max-w-2xl flex-grow">
+@section('title', 'Edit Pengguna')
+@section('back_button', true)
+@section('back_url', route('users.index'))
+@section('back_text', 'Kembali ke Daftar Pengguna')
+
+@section('content')
+    <div class="max-w-2xl mx-auto">
         <div class="bg-gray-800 border border-gray-700 rounded-lg shadow-xl overflow-hidden">
             <div class="bg-gray-900/50 p-6 border-b border-gray-700 flex justify-between items-center">
                 <div>
@@ -96,6 +82,5 @@
                 </div>
             </form>
         </div>
-    </main>
-</body>
-</html>
+    </div>
+@endsection

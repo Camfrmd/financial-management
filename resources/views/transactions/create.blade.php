@@ -1,34 +1,12 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Keuangan Banjar - Tambah Transaksi</title>
-    <!-- Using Tailwind CDN directly since Vite is not built -->
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-    </style>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body class="bg-gray-900 text-gray-100 min-h-screen">
+@extends('layouts.app')
 
-    <!-- En-tête -->
-    <nav class="bg-gray-800 border-b-2 border-red-700 px-6 py-4 flex justify-between items-center mb-8">
-        <div class="flex items-center space-x-4">
-            <div class="bg-red-700 text-white font-bold p-2 rounded">SKB</div>
-            <h1 class="text-xl font-semibold hidden sm:block">Sistem Keuangan Banjar</h1>
-        </div>
-        
-        <div class="flex items-center space-x-6">
-            <a href="{{ route('dashboard') }}" class="text-gray-300 hover:text-white transition-colors text-sm font-medium">
-                {{ __('Back to Dashboard') }}
-            </a>
-        </div>
-    </nav>
+@section('title', 'Tambah Transaksi')
+@section('back_button', true)
+@section('back_url', route('dashboard'))
+@section('back_text', __('Back to Dashboard'))
 
-    <main class="container mx-auto px-4 max-w-2xl">
-        
+@section('content')
+    <div class="max-w-2xl mx-auto">
         <div class="bg-gray-800 border border-gray-700 rounded-lg p-8 shadow-sm">
             <h2 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-4">{{ __('Add New Transaction') }}</h2>
 
@@ -134,6 +112,5 @@
                 </div>
             </form>
         </div>
-    </main>
-</body>
-</html>
+    </div>
+@endsection
