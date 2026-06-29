@@ -16,14 +16,14 @@ class DatabaseSeeder extends Seeder
         User::create([
             'username' => 'Wayan Treasurer',
             'email' => 'treasurer@banjar.com',
-            'password' => 'password123', 
+            'password' => bcrypt('password123'), 
             'role' => 'treasurer',
         ]);
 
         User::create([
             'username' => 'Made Kelian',
             'email' => 'kelian@banjar.com',
-            'password' => 'password123',
+            'password' => bcrypt('password123'),
             'role' => 'kelian',
         ]);
 
