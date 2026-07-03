@@ -15,34 +15,40 @@ class FundSeeder extends Seeder
     public function run(): void
     {
         // 1. Création d'un groupe communautaire par défaut
-        $group = CommunityGroup::create([
-            'group_name' => 'Banjar Adat',
-            'description' => 'Groupe principal du Banjar',
-        ]);
+        $group = CommunityGroup::firstOrCreate(
+            ['group_name' => 'Banjar Adat'],
+            ['description' => 'Groupe principal du Banjar']
+        );
 
         // 2. Création d'une activité par défaut
-        $activity = Activity::create([
-            'activity_name' => 'Operasional Banjar',
-            'status' => 'ongoing',
-            'start_date' => now(),
-            'end_date' => now()->addYears(10),
-        ]);
+        $activity = Activity::firstOrCreate(
+            ['activity_name' => 'Operasional Banjar'],
+            [
+                'status' => 'ongoing',
+                'start_date' => now(),
+                'end_date' => now()->addYears(10),
+            ]
+        );
 
         // 3. Création des fonds (avec et sans activité/groupe)
-        Fund::create([
-            'name' => 'Kas Umum Banjar',
-            'description' => 'Fonds général du Banjar (non lié à une activité spécifique)',
-            'current_balance' => 0,
-            'group_id' => null,
-            'activity_id' => null,
-        ]);
+        Fund::firstOrCreate(
+            ['name' => 'Kas Umum Banjar'],
+            [
+                'description' => 'Fonds général du Banjar (non lié à une activité spécifique)',
+                'current_balance' => 0,
+                'group_id' => null,
+                'activity_id' => null,
+            ]
+        );
 
-        Fund::create([
-            'name' => 'Kas Pembangunan',
-            'description' => 'Cagnotte dédiée à la construction et rénovation',
-            'current_balance' => 0,
-            'group_id' => $group->group_id,
-            'activity_id' => $activity->activity_id,
-        ]);
+        Fund::firstOrCreate(
+            ['name' => 'Kas Pembangunan'],
+            [
+                'description' => 'Cagnotte dédiée à la construction et rénovation',
+                'current_balance' => 0,
+                'group_id' => $group->group_id,
+                'activity_id' => $activity->activity_id,
+            ]
+        );
     }
 }

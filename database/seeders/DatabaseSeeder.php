@@ -13,19 +13,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'username' => 'Wayan Treasurer',
-            'email' => 'treasurer@banjar.com',
-            'password' => 'password123', 
-            'role' => 'treasurer',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'treasurer@banjar.com'],
+            [
+                'username' => 'Wayan Treasurer',
+                'password' => 'password123', 
+                'role' => 'treasurer',
+            ]
+        );
 
-        User::create([
-            'username' => 'Made Kelian',
-            'email' => 'kelian@banjar.com',
-            'password' => 'password123',
-            'role' => 'kelian',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'kelian@banjar.com'],
+            [
+                'username' => 'Made Kelian',
+                'password' => 'password123',
+                'role' => 'kelian',
+            ]
+        );
 
         $this->call([
             CategorySeeder::class,
