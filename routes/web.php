@@ -16,12 +16,15 @@ Route::middleware('guest')->group(function () {
 
 Route::get('/lang/{locale}', [\App\Http\Controllers\LanguageController::class, 'switch'])->name('lang.switch');
 
+use App\Http\Controllers\FundController;
 use App\Http\Controllers\TransactionController;
 
 Route::middleware('auth')->group(function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
+    Route::resource('funds', FundController::class)->middleware('can:manage-funds');
+
     Route::get('transactions', [TransactionController::class, 'index'])->name('transactions.index');
     Route::get('transactions/create', [TransactionController::class, 'create'])->name('transactions.create');
     Route::post('transactions', [TransactionController::class, 'store'])->name('transactions.store');

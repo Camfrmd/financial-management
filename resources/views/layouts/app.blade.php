@@ -51,6 +51,14 @@
                             {{ __('Financial Journal') }}
                         </a>
                         
+                        @can('manage-funds')
+                        <a href="{{ route('funds.index') }}" 
+                           class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center
+                           {{ request()->routeIs('funds.*') ? 'bg-gray-800/50 text-white shadow-inner border border-gray-700/50' : 'text-gray-400 hover:text-white hover:bg-gray-800/30' }}">
+                            {{ __('Funds Management') }}
+                        </a>
+                        @endcan
+                        
                         <a href="{{ route('transactions.create') }}" 
                            class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center
                            {{ request()->routeIs('transactions.create') ? 'bg-gray-800/50 text-white shadow-inner border border-gray-700/50' : 'text-gray-400 hover:text-white hover:bg-gray-800/30' }}">
@@ -120,6 +128,9 @@
             <div class="px-4 py-3 space-y-1">
                 <a href="{{ route('dashboard') }}" class="block px-3 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('dashboard') ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800/50 hover:text-white' }}">{{ __('Dashboard') }}</a>
                 <a href="{{ route('transactions.index') }}" class="block px-3 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('transactions.index') ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800/50 hover:text-white' }}">{{ __('Financial Journal') }}</a>
+                @can('manage-funds')
+                <a href="{{ route('funds.index') }}" class="block px-3 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('funds.*') ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800/50 hover:text-white' }}">{{ __('Funds Management') }}</a>
+                @endcan
                 <a href="{{ route('transactions.create') }}" class="block px-3 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('transactions.create') ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800/50 hover:text-white' }}">{{ __('New Transaction') }}</a>
                 @can('validate-transactions')
                 <a href="{{ route('transactions.pending') }}" class="block px-3 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('transactions.pending') ? 'bg-yellow-900/30 text-yellow-400' : 'text-gray-400 hover:bg-gray-800/50 hover:text-yellow-400' }}">{{ __('Review Queue') }}</a>
