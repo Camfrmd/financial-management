@@ -13,6 +13,15 @@ use Illuminate\Support\Facades\Storage;
 
 class TransactionController extends Controller
 {
+    public function index()
+    {
+        $transactions = Transaction::with(['category', 'fund', 'creator'])
+            ->orderBy('date', 'desc')
+            ->paginate(20);
+
+        return view('transactions.index', compact('transactions'));
+    }
+
     public function create()
     {
         $categories = Category::whereNotNull('parent_id')->get();
