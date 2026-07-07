@@ -38,4 +38,11 @@ Route::middleware('auth')->group(function () {
     Route::middleware('can:manage-users')->group(function () {
         Route::resource('users', \App\Http\Controllers\UserController::class)->except(['show', 'destroy']);
     });
+    
+    // Member Management
+    Route::resource('members', \App\Http\Controllers\MemberController::class)->except(['show']);
+    
+    // Contributions Tracking
+    Route::get('contributions', [\App\Http\Controllers\ContributionController::class, 'index'])->name('contributions.index');
+    Route::post('contributions/update-status', [\App\Http\Controllers\ContributionController::class, 'updateStatus'])->name('contributions.updateStatus');
 });

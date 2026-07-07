@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['member_id', 'transaction_id', 'fund_id', 'payment_status'])]
+#[Fillable(['member_id', 'transaction_id', 'fund_id', 'payment_status', 'period'])]
 class MemberContribution extends Model
 {
     protected $primaryKey = 'contri_id';
