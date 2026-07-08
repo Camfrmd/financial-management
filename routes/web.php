@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
     Route::resource('funds', FundController::class)->middleware('can:manage-funds');
+    Route::resource('categories', \App\Http\Controllers\CategoryController::class)->except(['show'])->middleware('can:manage-funds');
 
     Route::get('transactions', [TransactionController::class, 'index'])->name('transactions.index');
     Route::get('transactions/create', [TransactionController::class, 'create'])->name('transactions.create');
