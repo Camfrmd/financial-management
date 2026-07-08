@@ -34,5 +34,9 @@ class AppServiceProvider extends ServiceProvider
         \Illuminate\Support\Facades\Gate::define('manage-funds', function (\App\Models\User $user) {
             return $user->role === 'treasurer';
         });
+
+        \Illuminate\Support\Facades\Gate::define('view-reports', function (\App\Models\User $user) {
+            return in_array($user->role, ['kelian', 'treasurer']);
+        });
     }
 }
