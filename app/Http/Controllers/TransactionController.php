@@ -17,7 +17,39 @@ class TransactionController extends Controller
     {
         $transactions = Transaction::with(['category', 'fund', 'creator'])
             ->orderBy('date', 'desc')
+            ->orderBy('transaction_id', 'desc')
             ->paginate(20);
+
+        if ($transactions->isNotEmpty()) {
+            $topTx = $transactions->first();
+            
+            $startingBalance = Transaction::where('validation_status', 'validated')
+                ->where(function($query) use ($topTx) {
+                    $query->where('date', '<', $topTx->date)
+                          ->orWhere(function($q) use ($topTx) {
+                              $q->where('date', '=', $topTx->date)
+                                ->where('transaction_id', '<=', $topTx->transaction_id);
+                          });
+                })
+                ->selectRaw("SUM(CASE WHEN type = 'income' THEN amount ELSE -amount END) as balance")
+                ->value('balance') ?? 0;
+
+            $currentBalance = $startingBalance;
+
+            foreach ($transactions as $tx) {
+                if ($tx->validation_status === 'validated') {
+                    $tx->running_balance = $currentBalance;
+                    
+                    if ($tx->type === 'income') {
+                        $currentBalance -= $tx->amount;
+                    } else {
+                        $currentBalance += $tx->amount;
+                    }
+                } else {
+                    $tx->running_balance = null;
+                }
+            }
+        }
 
         return view('transactions.index', compact('transactions'));
     }

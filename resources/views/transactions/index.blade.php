@@ -48,6 +48,7 @@
                         <th class="px-5 py-4 font-semibold">{{ __('Date') }}</th>
                         <th class="px-5 py-4 font-semibold">{{ __('Description') }}</th>
                         <th class="px-5 py-4 font-semibold text-right">{{ __('Amount') }}</th>
+                        <th class="px-5 py-4 font-semibold text-right">{{ __('Running Balance') }}</th>
                         <th class="px-5 py-4 font-semibold text-center">{{ __('Status') }}</th>
                     </tr>
                 </thead>
@@ -70,6 +71,15 @@
                                 <div class="font-bold text-base {{ $tx->type === 'income' ? 'text-green-500' : 'text-red-500' }}">
                                     {{ $tx->type === 'income' ? '+' : '-' }}Rp {{ number_format($tx->amount, 0, ',', '.') }}
                                 </div>
+                            </td>
+                            <td class="px-5 py-4 text-right whitespace-nowrap">
+                                @if($tx->validation_status === 'validated')
+                                    <div class="font-bold text-base text-white">
+                                        Rp {{ number_format($tx->running_balance, 0, ',', '.') }}
+                                    </div>
+                                @else
+                                    <div class="text-sm text-gray-500 italic">-</div>
+                                @endif
                             </td>
                             <td class="px-5 py-4 text-center whitespace-nowrap">
                                 @if($tx->validation_status === 'validated')

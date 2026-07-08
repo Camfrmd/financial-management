@@ -48,6 +48,11 @@ Route::middleware('auth')->group(function () {
         Route::get('reports/export/excel', [\App\Http\Controllers\ReportController::class, 'exportExcel'])->name('reports.export.excel');
     });
 
+    // Cash Flow Summary
+    Route::middleware('can:view-reports')->group(function () {
+        Route::get('cashflow', [\App\Http\Controllers\CashFlowController::class, 'index'])->name('cashflow.index');
+    });
+
     // Member Management
     Route::resource('members', \App\Http\Controllers\MemberController::class)->except(['show']);
     
