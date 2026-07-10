@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\LpjExport;
+use Illuminate\Support\Facades\URL;
 
 class ReportController extends Controller
 {
@@ -98,7 +99,29 @@ class ReportController extends Controller
 
         $data = $this->getReportData($request->start_date, $request->end_date, $request->fund_id);
 
+        $shareUrl = URL::signedRoute('reports.public', [
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'fund_id' => $request->fund_id
+        ]);
+
+        $data['shareUrl'] = $shareUrl;
+
         return view('reports.preview', $data);
+    }
+
+    public function publicView(Request $request)
+    {
+        // Request signature is already validated by the 'signed' middleware
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'fund_id' => 'nullable|exists:funds,fund_id'
+        ]);
+
+        $data = $this->getReportData($request->start_date, $request->end_date, $request->fund_id);
+
+        return view('reports.public', $data);
     }
 
     public function exportPdf(Request $request)

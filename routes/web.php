@@ -14,6 +14,11 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [LoginController::class, 'login']);
 });
 
+// Public Signed Routes
+Route::get('public/report', [\App\Http\Controllers\ReportController::class, 'publicView'])
+    ->name('reports.public')
+    ->middleware('signed');
+
 Route::get('/lang/{locale}', [\App\Http\Controllers\LanguageController::class, 'switch'])->name('lang.switch');
 
 use App\Http\Controllers\FundController;
