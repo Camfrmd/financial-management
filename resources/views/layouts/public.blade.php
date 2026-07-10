@@ -42,7 +42,7 @@
                 </div>
                 <div>
                     <h1 class="text-white font-bold text-lg leading-tight">{{ config('app.name', 'Digital Village') }}</h1>
-                    <p class="text-red-200 text-xs">{{ __('Transparansi Publik') }}</p>
+                    <p class="text-red-200 text-xs">{{ __('Public Transparency') }}</p>
                 </div>
             </div>
             

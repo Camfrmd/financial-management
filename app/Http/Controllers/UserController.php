@@ -46,7 +46,7 @@ class UserController extends Controller
             'is_active' => true,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'Utilisateur créé avec succès.');
+        return redirect()->route('users.index')->with('success', __('User created successfully.'));
     }
 
     /**
@@ -81,6 +81,6 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('users.index')->with('success', 'Utilisateur mis à jour avec succès.');
+        return redirect()->route('users.index')->with('success', __('User updated successfully.'));
     }
 }

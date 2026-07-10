@@ -92,7 +92,7 @@ class TransactionController extends Controller
         ]);
 
         // 4. Redirection vers le tableau de bord
-        return redirect()->route('dashboard')->with('success', 'Transaksi berhasil dibuat dan menunggu validasi.');
+        return redirect()->route('dashboard')->with('success', __('Transaction created successfully and is awaiting validation.'));
     }
 
     public function pending()
