@@ -78,7 +78,7 @@ class DashboardController extends Controller
         $projectedLabels = [];
         $projectedBalances = [];
         
-        $currentProjectionBalance = clone $totalBalance;
+        $currentProjectionBalance = $totalBalance;
         
         // Next 6 months (starting next month)
         for ($i = 1; $i <= 6; $i++) {
