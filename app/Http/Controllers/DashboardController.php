@@ -63,6 +63,37 @@ class DashboardController extends Controller
             }
         }
 
+        // 4. Projections (6 Months Forward)
+        // Calculate Baseline Recurring Income (Average of last 6 months' recurring income)
+        $recurringIncomeTotal = Transaction::where('validation_status', 'validated')
+            ->where('type', 'income')
+            ->where('date', '>=', $sixMonthsAgo)
+            ->whereHas('category', function($q) {
+                $q->where('is_recurring', true);
+            })
+            ->sum('amount');
+            
+        $baselineMonthlyIncome = $recurringIncomeTotal / 6;
+
+        $projectedLabels = [];
+        $projectedBalances = [];
+        
+        $currentProjectionBalance = clone $totalBalance;
+        
+        // Next 6 months (starting next month)
+        for ($i = 1; $i <= 6; $i++) {
+            $futureMonth = now()->addMonths($i);
+            $projectedLabels[] = $futureMonth->translatedFormat('M Y');
+            
+            // Find planned expenses (activities) in this specific future month
+            $plannedExpenses = Activity::whereYear('start_date', $futureMonth->year)
+                ->whereMonth('start_date', $futureMonth->month)
+                ->sum('estimated_budget');
+                
+            $currentProjectionBalance = $currentProjectionBalance + $baselineMonthlyIncome - $plannedExpenses;
+            $projectedBalances[] = $currentProjectionBalance;
+        }
+
         // 4. Récupération des 5 dernières transactions validées
         $recentTransactions = Transaction::with('category')
             ->where('validation_status', 'validated')
@@ -88,7 +119,10 @@ class DashboardController extends Controller
             'currentMonthExpenses',
             'chartLabels',
             'chartIncomes',
-            'chartExpenses'
+            'chartExpenses',
+            'projectedLabels',
+            'projectedBalances',
+            'baselineMonthlyIncome'
         ));
     }
 }

@@ -48,7 +48,14 @@
                     @foreach($incomeCategories as $category)
                         <div class="bg-[#222538] rounded-lg border border-gray-700/50 p-4 transition-all hover:border-gray-600">
                             <div class="flex justify-between items-center mb-2">
-                                <h3 class="text-base font-bold text-gray-200">{{ $category->category_name }}</h3>
+                                <h3 class="text-base font-bold text-gray-200">
+                                    {{ $category->category_name }}
+                                    @if($category->is_recurring)
+                                        <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-900/40 text-indigo-400 border border-indigo-800/50">
+                                            {{ __('Recurring') }}
+                                        </span>
+                                    @endif
+                                </h3>
                                 <div class="flex space-x-3">
                                     <a href="{{ route('categories.edit', $category->category_id) }}" class="text-gray-400 hover:text-white transition-colors" title="{{ __('Edit') }}">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
@@ -110,7 +117,14 @@
                     @foreach($expenseCategories as $category)
                         <div class="bg-[#222538] rounded-lg border border-gray-700/50 p-4 transition-all hover:border-gray-600">
                             <div class="flex justify-between items-center mb-2">
-                                <h3 class="text-base font-bold text-gray-200">{{ $category->category_name }}</h3>
+                                <h3 class="text-base font-bold text-gray-200">
+                                    {{ $category->category_name }}
+                                    @if($category->is_recurring)
+                                        <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-900/40 text-indigo-400 border border-indigo-800/50">
+                                            {{ __('Recurring') }}
+                                        </span>
+                                    @endif
+                                </h3>
                                 <div class="flex space-x-3">
                                     <a href="{{ route('categories.edit', $category->category_id) }}" class="text-gray-400 hover:text-white transition-colors" title="{{ __('Edit') }}">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>

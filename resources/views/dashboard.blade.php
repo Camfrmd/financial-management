@@ -91,6 +91,28 @@
 
     </div>
 
+    <!-- Projection Row -->
+    <div class="mb-8">
+        <section class="bg-[#1a1d2d] border border-gray-800 rounded-xl p-6 shadow-xl">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 border-b border-gray-800 pb-4">
+                <h2 class="text-lg font-semibold text-white flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                    {{ __('6-Month Financial Projection') }}
+                </h2>
+                <div class="bg-blue-900/30 border border-blue-800/50 rounded-lg px-4 py-2 flex items-center shadow-inner">
+                    <span class="text-sm text-gray-400 mr-2">{{ __('Calculated MRR (Monthly Recurring Revenue):') }}</span>
+                    <span class="font-bold text-blue-400">Rp {{ number_format($baselineMonthlyIncome, 0, ',', '.') }}</span>
+                </div>
+            </div>
+            <div class="relative w-full" style="min-height: 250px;">
+                <canvas id="projectionChart"></canvas>
+            </div>
+            <p class="text-xs text-gray-500 mt-4 italic text-center">
+                {{ __('Projections are calculated dynamically using the 6-month average of categories marked as "Recurring", minus any planned activity budgets.') }}
+            </p>
+        </section>
+    </div>
+
     <!-- Data Tables Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
 
@@ -166,6 +188,12 @@
                                     @endif
                                 </div>
                             </div>
+                            @if($activity->estimated_budget > 0)
+                                <div class="ml-auto text-right flex-shrink-0">
+                                    <div class="text-xs text-gray-500 mb-0.5">{{ __('Budget') }}</div>
+                                    <div class="font-bold text-sm text-red-400">-Rp {{ number_format($activity->estimated_budget, 0, ',', '.') }}</div>
+                                </div>
+                            @endif
                         </li>
                     @endforeach
                 </ul>
@@ -279,6 +307,80 @@
                                             label += 'Rp ' + new Intl.NumberFormat('id-ID').format(context.parsed.y);
                                         }
                                         return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false,
+                                    drawBorder: false
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    color: colorGrid,
+                                    drawBorder: false,
+                                    borderDash: [5, 5]
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        if (value >= 1000000) return (value / 1000000) + 'M';
+                                        if (value >= 1000) return (value / 1000) + 'K';
+                                        return value;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 3. Line Chart (Projections)
+            const projCanvas = document.getElementById('projectionChart');
+            if (projCanvas) {
+                const ctxProj = projCanvas.getContext('2d');
+                new Chart(ctxProj, {
+                    type: 'line',
+                    data: {
+                        labels: {!! json_encode($projectedLabels) !!},
+                        datasets: [{
+                            label: '{{ __("Projected Balance") }}',
+                            data: {!! json_encode($projectedBalances) !!},
+                            borderColor: '#3b82f6', // Blue 500
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#3b82f6',
+                            pointBorderColor: '#1e3a8a',
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            pointHoverRadius: 6,
+                            fill: true,
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: '#1f2937',
+                                titleColor: '#f3f4f6',
+                                bodyColor: '#60a5fa',
+                                borderColor: '#374151',
+                                borderWidth: 1,
+                                padding: 12,
+                                callbacks: {
+                                    label: function(context) {
+                                        return 'Rp ' + new Intl.NumberFormat('id-ID').format(context.parsed.y);
                                     }
                                 }
                             }
