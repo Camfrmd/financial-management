@@ -14,8 +14,8 @@ class LanguageController extends Controller
      */
     public function switch($locale)
     {
-        // Whitelist allowed languages to prevent injection
-        if (!in_array($locale, ['en', 'id', 'fr'])) {
+        // Whitelist allowed languages to prevent injection (dynamically pulled from config/app.php)
+        if (!array_key_exists($locale, config('app.supported_locales'))) {
             abort(400, 'Invalid language selected.');
         }
 

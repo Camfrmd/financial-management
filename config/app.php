@@ -123,4 +123,19 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Supported Locales
+    |--------------------------------------------------------------------------
+    |
+    | Centralized list of supported languages for the application.
+    | Add a new language here and the UI will adapt automatically.
+    |
+    */
+    'supported_locales' => [
+        'id' => 'ID',
+        'en' => 'EN',
+        'fr' => 'FR',
+    ],
+
 ];

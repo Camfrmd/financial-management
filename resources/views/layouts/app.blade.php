@@ -105,10 +105,12 @@
                 <div class="flex items-center space-x-6">
                     
                     <!-- Language Switcher -->
-                    <div class="hidden sm:flex bg-gray-900/50 rounded-lg p-1 border border-gray-800">
-                        <a href="{{ route('lang.switch', 'id') }}" class="px-2.5 py-1 text-xs font-bold rounded transition-colors {{ app()->getLocale() == 'id' ? 'bg-red-600 text-white shadow' : 'text-gray-500 hover:text-gray-300' }}">ID</a>
-                        <a href="{{ route('lang.switch', 'en') }}" class="px-2.5 py-1 text-xs font-bold rounded transition-colors {{ app()->getLocale() == 'en' ? 'bg-red-600 text-white shadow' : 'text-gray-500 hover:text-gray-300' }}">EN</a>
-                        <a href="{{ route('lang.switch', 'fr') }}" class="px-2.5 py-1 text-xs font-bold rounded transition-colors {{ app()->getLocale() == 'fr' ? 'bg-red-600 text-white shadow' : 'text-gray-500 hover:text-gray-300' }}">FR</a>
+                    <div class="flex bg-gray-900 p-1 rounded-lg">
+                        @foreach(config('app.supported_locales') as $code => $label)
+                            <a href="{{ route('lang.switch', $code) }}" class="px-2.5 py-1 text-xs font-bold rounded transition-colors {{ app()->getLocale() == $code ? 'bg-red-600 text-white shadow' : 'text-gray-500 hover:text-gray-300' }}">
+                                {{ $label }}
+                            </a>
+                        @endforeach
                     </div>
 
                     <!-- User Profile & Logout -->
@@ -165,10 +167,12 @@
             
             <div class="pt-4 pb-4 border-t border-gray-800 px-5">
                 <!-- Mobile Language -->
-                <div class="flex space-x-2 mb-4 bg-gray-900 rounded-lg p-1 w-max">
-                    <a href="{{ route('lang.switch', 'id') }}" class="px-3 py-1.5 text-xs font-bold rounded {{ app()->getLocale() == 'id' ? 'bg-red-600 text-white' : 'text-gray-500' }}">ID</a>
-                    <a href="{{ route('lang.switch', 'en') }}" class="px-3 py-1.5 text-xs font-bold rounded {{ app()->getLocale() == 'en' ? 'bg-red-600 text-white' : 'text-gray-500' }}">EN</a>
-                    <a href="{{ route('lang.switch', 'fr') }}" class="px-3 py-1.5 text-xs font-bold rounded {{ app()->getLocale() == 'fr' ? 'bg-red-600 text-white' : 'text-gray-500' }}">FR</a>
+                <div class="flex space-x-2">
+                    @foreach(config('app.supported_locales') as $code => $label)
+                        <a href="{{ route('lang.switch', $code) }}" class="px-3 py-1.5 text-xs font-bold rounded {{ app()->getLocale() == $code ? 'bg-red-600 text-white' : 'text-gray-500' }}">
+                            {{ $label }}
+                        </a>
+                    @endforeach
                 </div>
                 
                 <!-- Mobile User -->

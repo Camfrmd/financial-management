@@ -46,10 +46,12 @@
                 </div>
             </div>
             
-            <div class="flex items-center">
-                <a href="{{ route('lang.switch', ['locale' => app()->getLocale() === 'en' ? 'id' : 'en']) }}" class="text-sm font-medium text-red-200 hover:text-white transition-colors bg-red-950/30 px-3 py-1.5 rounded-full border border-red-800/50">
-                    {{ strtoupper(app()->getLocale() === 'en' ? 'ID' : 'EN') }}
-                </a>
+            <div class="flex items-center space-x-2">
+                @foreach(config('app.supported_locales') as $code => $label)
+                    <a href="{{ route('lang.switch', $code) }}" class="text-sm font-medium transition-colors px-3 py-1.5 rounded-full border {{ app()->getLocale() === $code ? 'text-white bg-red-900/60 border-red-500/50' : 'text-red-300 hover:text-white bg-red-950/30 border-red-800/30' }}">
+                        {{ $label }}
+                    </a>
+                @endforeach
             </div>
         </div>
     </header>
