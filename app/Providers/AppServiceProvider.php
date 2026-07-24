@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Auth\Events\Login;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -22,6 +24,12 @@ class AppServiceProvider extends ServiceProvider
         if (env('APP_ENV') === 'production') {
             URL::forceScheme('https');
         }
+
+        Event::listen(Login::class, function (Login $event) {
+            activity('auth')
+                ->causedBy($event->user)
+                ->log('User logged in');
+        });
 
         \Illuminate\Support\Facades\Gate::define('validate-transactions', function (\App\Models\User $user) {
             return $user->role === 'kelian';

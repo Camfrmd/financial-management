@@ -99,6 +99,15 @@ class ReportController extends Controller
 
         $data = $this->getReportData($request->start_date, $request->end_date, $request->fund_id);
 
+        activity('report')
+            ->causedBy(auth()->user())
+            ->withProperties([
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'fund_id' => $request->fund_id,
+            ])
+            ->log('Generated LPJ Preview');
+
         $shareUrl = URL::signedRoute('reports.public', [
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
@@ -134,6 +143,15 @@ class ReportController extends Controller
 
         $data = $this->getReportData($request->start_date, $request->end_date, $request->fund_id);
 
+        activity('report')
+            ->causedBy(auth()->user())
+            ->withProperties([
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'fund_id' => $request->fund_id,
+            ])
+            ->log('Exported LPJ PDF');
+
         $pdf = Pdf::loadView('reports.pdf', $data);
         return $pdf->download('LPJ_' . $data['startDate'] . '_to_' . $data['endDate'] . '.pdf');
     }
@@ -147,6 +165,15 @@ class ReportController extends Controller
         ]);
 
         $data = $this->getReportData($request->start_date, $request->end_date, $request->fund_id);
+
+        activity('report')
+            ->causedBy(auth()->user())
+            ->withProperties([
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'fund_id' => $request->fund_id,
+            ])
+            ->log('Exported LPJ Excel');
 
         return Excel::download(new LpjExport($data), 'LPJ_' . $data['startDate'] . '_to_' . $data['endDate'] . '.xlsx');
     }
