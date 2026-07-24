@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#161925">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Eo_circle_red_white_letter-s.svg/192px-Eo_circle_red_white_letter-s.svg.png">
     <title>Sistem Keuangan Banjar @hasSection('title') - @yield('title') @endif</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- Fallback if Vite is not running -->
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/idb@8/build/umd.js"></script>
+    <script src="/js/offline-sync.js" defer></script>
     <style>
         body { font-family: 'Inter', sans-serif; }
         /* Premium custom scrollbar */
@@ -235,6 +240,19 @@
             iconBars.classList.toggle('hidden');
             iconClose.classList.toggle('hidden');
         });
+
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered:', registration);
+                    })
+                    .catch(error => {
+                        console.log('SW registration failed:', error);
+                    });
+            });
+        }
     </script>
 </body>
 </html>

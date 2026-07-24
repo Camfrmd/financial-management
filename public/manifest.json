@@ -1,0 +1,21 @@
+{
+    "name": "Sistem Keuangan Banjar",
+    "short_name": "SKB",
+    "start_url": "/dashboard",
+    "display": "standalone",
+    "background_color": "#0f111a",
+    "theme_color": "#161925",
+    "description": "Financial management for Digital Village Banjar",
+    "icons": [
+        {
+            "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Eo_circle_red_white_letter-s.svg/1024px-Eo_circle_red_white_letter-s.svg.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Eo_circle_red_white_letter-s.svg/1024px-Eo_circle_red_white_letter-s.svg.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

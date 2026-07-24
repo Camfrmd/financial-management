@@ -134,24 +134,40 @@
                 btnElement.className = 'status-btn px-4 py-2 text-sm font-medium rounded-r-lg transition-colors bg-gray-600 text-white border-gray-500 z-10';
             }
 
+            const url = '{{ route('contributions.updateStatus') }}';
+            const payload = {
+                member_id: memberId,
+                fund_id: fundId,
+                period: period,
+                status: status
+            };
+
+            // Offline Check
+            if (!navigator.onLine) {
+                const saved = await addRequestToQueue(url, 'POST', payload, csrfToken);
+                if (saved) {
+                    document.getElementById('toast-message').innerText = '{{ __('Saved offline. Will sync when connected.') }}';
+                    showToast();
+                } else {
+                    alert('{{ __('Failed to save offline.') }}');
+                }
+                return;
+            }
+
             try {
-                const response = await fetch('{{ route('contributions.updateStatus') }}', {
+                const response = await fetch(url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': csrfToken,
                         'Accept': 'application/json'
                     },
-                    body: JSON.stringify({
-                        member_id: memberId,
-                        fund_id: fundId,
-                        period: period,
-                        status: status
-                    })
+                    body: JSON.stringify(payload)
                 });
 
                 const result = await response.json();
                 if (result.success) {
+                    document.getElementById('toast-message').innerText = '{{ __('Status updated successfully') }}';
                     showToast();
                 } else {
                     console.error('Server returned error', result);
@@ -159,7 +175,15 @@
                 }
             } catch (error) {
                 console.error('Fetch error:', error);
-                alert('{{ __('Network error. Could not update status.') }}');
+                
+                // Fallback if fetch fails (e.g. suddenly lost connection)
+                const saved = await addRequestToQueue(url, 'POST', payload, csrfToken);
+                if (saved) {
+                    document.getElementById('toast-message').innerText = '{{ __('Saved offline. Will sync when connected.') }}';
+                    showToast();
+                } else {
+                    alert('{{ __('Network error. Could not update status.') }}');
+                }
             }
         }
     </script>
