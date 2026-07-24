@@ -10,9 +10,6 @@ use App\Models\Transaction;
 use App\Http\Requests\StoreTransactionRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
 
 class TransactionController extends Controller
 {
@@ -75,29 +72,10 @@ class TransactionController extends Controller
                 ->withInput();
         }
 
-        // 2. Gestion de l'upload du fichier preuve (Compression si image)
+        // 2. Gestion de l'upload du fichier preuve
         $proofPath = null;
         if ($request->hasFile('proof_file')) {
-            $file = $request->file('proof_file');
-            $extension = strtolower($file->getClientOriginalExtension());
-            
-            if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
-                $filename = 'proofs/' . Str::uuid() . '.jpg';
-                $manager = new ImageManager(new Driver());
-                $image = $manager->read($file->getRealPath());
-                
-                // Redimensionnement max largeur 1200px
-                $image->scale(down: true, width: 1200);
-                
-                // Compression JPEG 75%
-                $encoded = $image->toJpeg(75);
-                Storage::disk('public')->put($filename, $encoded->toString());
-                
-                $proofPath = $filename;
-            } else {
-                $filename = 'proofs/' . Str::uuid() . '.' . $extension;
-                $proofPath = $file->storeAs('proofs', basename($filename), 'public');
-            }
+            $proofPath = $request->file('proof_file')->store('proofs', 'public');
         }
 
         // 3. Création de la transaction (forcée à 'pending')
@@ -109,7 +87,7 @@ class TransactionController extends Controller
             'amount' => $request->amount,
             'date' => $request->date,
             'description' => $request->description,
-            'receipt_path' => $proofPath,
+            'proof_file' => $proofPath,
             'validation_status' => 'pending',
         ]);
 
