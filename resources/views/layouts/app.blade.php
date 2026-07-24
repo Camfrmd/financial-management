@@ -97,6 +97,11 @@
                            {{ request()->routeIs('reports.*') ? 'bg-gray-800/50 text-white shadow-inner border border-gray-700/50' : 'text-gray-400 hover:text-white hover:bg-gray-800/30' }}">
                             {{ __('Reports (LPJ)') }}
                         </a>
+                        <a href="{{ route('activity.index') }}" 
+                           class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center
+                           {{ request()->routeIs('activity.*') ? 'bg-blue-900/30 text-blue-200 shadow-inner border border-blue-800/50' : 'text-gray-400 hover:text-white hover:bg-gray-800/30' }}">
+                            {{ __('Audit Trail') }}
+                        </a>
                         @endcan
                     </div>
                 </div>
@@ -162,6 +167,7 @@
                 @can('view-reports')
                 <a href="{{ route('cashflow.index') }}" class="block px-3 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('cashflow.*') ? 'bg-[#581c87] text-[#f3e8ff]' : 'text-gray-400 hover:bg-gray-800/50 hover:text-white' }}">{{ __('Cash Flow') }}</a>
                 <a href="{{ route('reports.index') }}" class="block px-3 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('reports.*') ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800/50 hover:text-white' }}">{{ __('Reports (LPJ)') }}</a>
+                <a href="{{ route('activity.index') }}" class="block px-3 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('activity.*') ? 'bg-blue-900/50 text-blue-200' : 'text-gray-400 hover:bg-gray-800/50 hover:text-white' }}">{{ __('Audit Trail') }}</a>
                 @endcan
             </div>
             

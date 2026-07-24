@@ -23,6 +23,7 @@ Route::get('/lang/{locale}', [\App\Http\Controllers\LanguageController::class, '
 
 use App\Http\Controllers\FundController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\ActivityLogController;
 
 Route::middleware('auth')->group(function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
@@ -51,6 +52,7 @@ Route::middleware('auth')->group(function () {
         Route::get('reports/generate', [\App\Http\Controllers\ReportController::class, 'generate'])->name('reports.generate');
         Route::get('reports/export/pdf', [\App\Http\Controllers\ReportController::class, 'exportPdf'])->name('reports.export.pdf');
         Route::get('reports/export/excel', [\App\Http\Controllers\ReportController::class, 'exportExcel'])->name('reports.export.excel');
+        Route::get('audit-logs', [ActivityLogController::class, 'index'])->name('activity.index');
     });
 
     // Cash Flow Summary
