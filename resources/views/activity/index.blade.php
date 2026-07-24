@@ -45,7 +45,7 @@
                                     @endif
                                 </td>
                                 <td class="px-4 py-4">
-                                    <div class="font-semibold text-white">{{ $activity->description }}</div>
+                                    <div class="font-semibold text-white">{{ __($activity->description) }}</div>
                                     <div class="text-xs text-gray-400 mt-0.5">
                                         {{ __('Subject:') }} {{ $activity->subject_type ? class_basename($activity->subject_type) . ' #' . $activity->subject_id : __('N/A') }}
                                     </div>
