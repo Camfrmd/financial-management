@@ -44,7 +44,14 @@
                                     {{ $tx->creator->username ?? __('Unknown') }}
                                 </td>
                                 <td class="px-4 py-3">
-                                    <div class="font-medium text-gray-200">{{ $tx->description }}</div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="font-medium text-gray-200">{{ $tx->description }}</div>
+                                        @if($tx->receipt_path)
+                                            <a href="{{ asset('storage/' . $tx->receipt_path) }}" target="_blank" class="ml-2 text-gray-500 hover:text-white transition-colors" title="{{ __('View Proof') }}">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
+                                            </a>
+                                        @endif
+                                    </div>
                                     <div class="text-xs text-gray-500">
                                         {{ $tx->category->category_name ?? __('Uncategorized') }} &bull; {{ $tx->fund->name ?? __('Unknown Fund') }}
                                     </div>
